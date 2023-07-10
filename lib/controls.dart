@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, prefer_const_constructors
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +9,21 @@ class ControlPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: SafeArea(
+
+        child: Container(
+          padding: EdgeInsets.all(20.0),
+          alignment: Alignment.bottomCenter,
+          child: Column(
+           mainAxisAlignment: MainAxisAlignment.end,
+           children: <Widget>[
+            ElevatedButton(onPressed: (){}, child:
+            Text('Create Camera') )
+           ],
+          ),
+        ),
+      ),
+    );
   }
 }

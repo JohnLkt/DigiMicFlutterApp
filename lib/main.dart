@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const CameraWindow();
   }
+
 }
 
 class HomePage extends StatelessWidget {
