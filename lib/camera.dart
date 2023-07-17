@@ -5,8 +5,6 @@ import 'package:camera_platform_interface/camera_platform_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'controls.dart';
-
 class CameraWindow extends StatefulWidget {
   const CameraWindow({super.key});
 
@@ -327,13 +325,7 @@ class _CameraWindowState extends State<CameraWindow> {
       );
     }).toList();
 
-    return MaterialApp(
-      scaffoldMessengerKey: _scaffoldMessengerKey,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: ListView(
+    return ListView(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -351,208 +343,222 @@ class _CameraWindowState extends State<CameraWindow> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      DropdownButton<ResolutionPreset>(
-                        value: _resolutionPreset,
-                        onChanged: (ResolutionPreset? value) {
-                          if (value != null) {
-                            _onResolutionChange(value);
-                          }
-                        },
-                        items: resolutionItems,
-                      ),
-                      const SizedBox(width: 20),
-                      const Text('Audio:'),
-                      Switch(
-                        value: _recordAudio,
-                        onChanged: (bool state) => _onAudioChange(state),
-                      ),
-                      const SizedBox(width: 20),
-                      ElevatedButton(
-                        onPressed: _initialized
-                            ? _disposeCurrentCamera
-                            : _initializeCamera,
-                        child: Text(
-                            _initialized ? 'Dispose camera' : 'Create camera'),
-                      ),
-                      const SizedBox(width: 5),
-                      ElevatedButton(
-                        onPressed: _initialized ? _takePicture : null,
-                        child: const Text('Take picture'),
-                      ),
-                      const SizedBox(width: 5),
-                      ElevatedButton(
-                        onPressed: _initialized ? _togglePreview : null,
-                        child: Text(
-                          _previewPaused ? 'Resume preview' : 'Pause preview',
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      spacing: 25.00,
+                      children: <Widget>[
+                        DropdownButton<ResolutionPreset>(
+                          value: _resolutionPreset,
+                          onChanged: (ResolutionPreset? value) {
+                            if (value != null) {
+                              _onResolutionChange(value);
+                            }
+                          },
+                          items: resolutionItems,
                         ),
-                      ),
-                      const SizedBox(width: 5),
-                      ElevatedButton(
-                        onPressed: _initialized ? _toggleRecord : null,
-                        child: Text(
-                          (_recording || _recordingTimed)
-                              ? 'Stop recording'
-                              : 'Record Video',
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      ElevatedButton(
-                        onPressed:
-                            (_initialized && !_recording && !_recordingTimed)
-                                ? () => _recordTimed(5)
-                                : null,
-                        child: const Text(
-                          'Record 5 seconds',
-                        ),
-                      ),
-                      if (_cameras.length > 1) ...<Widget>[
-                        const SizedBox(width: 5),
+                        SizedBox(
+                          width: 100,
+                          height: 48,
+                          child: Row(
+                            children: [
+                              const Text('Audio:'),
+                              Switch(
+                                value: _recordAudio,
+                                onChanged: (bool state) => _onAudioChange(state),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      spacing: 5.00,
+                      children: <Widget>[
                         ElevatedButton(
-                          onPressed: _switchCamera,
-                          child: const Text(
-                            'Switch camera',
+                          onPressed: _initialized
+                              ? _disposeCurrentCamera
+                              : _initializeCamera,
+                          child: Text(
+                              _initialized ? 'Dispose camera' : 'Create camera'),
+                        ),
+                        ElevatedButton(
+                          onPressed: _initialized ? _takePicture : null,
+                          child: const Text('Take picture'),
+                        ),
+                        ElevatedButton(
+                          onPressed: _initialized ? _togglePreview : null,
+                          child: Text(
+                            _previewPaused ? 'Resume preview' : 'Pause preview',
                           ),
                         ),
-                      ]
-                    ],
+                        ElevatedButton(
+                          onPressed: _initialized ? _toggleRecord : null,
+                          child: Text(
+                            (_recording || _recordingTimed)
+                                ? 'Stop recording'
+                                : 'Record Video',
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed:
+                              (_initialized && !_recording && !_recordingTimed)
+                                  ? () => _recordTimed(5)
+                                  : null,
+                          child: const Text(
+                            'Record 5 seconds',
+                          ),
+                        ),
+                        if (_cameras.length > 1) ...<Widget>[
+                          ElevatedButton(
+                            onPressed: _switchCamera,
+                            child: const Text(
+                              'Switch camera',
+                            ),
+                          ),
+                        ]
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_left),
-                              onPressed: _takePicture,
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Y axis',
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_right),
-                              onPressed: _takePicture,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .end, // Aligns content to the right
-                        children: <Widget>[
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_left),
-                              onPressed: _takePicture,
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'X axis',
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_right),
-                              onPressed: _takePicture,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .end, // Aligns content to the right
-                        children: <Widget>[
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_left),
-                              onPressed: _takePicture,
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Z axis',
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_right),
-                              onPressed: _takePicture,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .end, // Aligns content to the right
-                        children: <Widget>[
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_left),
-                              onPressed: _takePicture,
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Brightness',
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_right),
-                              onPressed: _takePicture,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+// Column(
+//   children: <Widget>[
+//     Row(
+//       mainAxisAlignment: MainAxisAlignment.end,
+//       children: <Widget>[
+//         Container(
+//           margin: const EdgeInsets.symmetric(horizontal: 10),
+//           child: IconButton(
+//             icon: const Icon(Icons.arrow_left),
+//             onPressed: _takePicture,
+//           ),
+//         ),
+//         Expanded(
+//           child: Container(
+//             margin:
+//                 const EdgeInsets.symmetric(horizontal: 10),
+//             child: TextField(
+//               decoration: InputDecoration(
+//                 border: OutlineInputBorder(),
+//                 labelText: 'Y axis',
+//               ),
+//             ),
+//           ),
+//         ),
+//         Container(
+//           margin: const EdgeInsets.symmetric(horizontal: 10),
+//           child: IconButton(
+//             icon: const Icon(Icons.arrow_right),
+//             onPressed: _takePicture,
+//           ),
+//         ),
+//       ],
+//     ),
+//     SizedBox(height: 10),
+//     Row(
+//       mainAxisAlignment: MainAxisAlignment
+//           .end, // Aligns content to the right
+//       children: <Widget>[
+//         Container(
+//           margin: const EdgeInsets.symmetric(horizontal: 10),
+//           child: IconButton(
+//             icon: const Icon(Icons.arrow_left),
+//             onPressed: _takePicture,
+//           ),
+//         ),
+//         Expanded(
+//           child: Container(
+//             margin:
+//                 const EdgeInsets.symmetric(horizontal: 10),
+//             child: TextField(
+//               decoration: InputDecoration(
+//                 border: OutlineInputBorder(),
+//                 labelText: 'X axis',
+//               ),
+//             ),
+//           ),
+//         ),
+//         Container(
+//           margin: const EdgeInsets.symmetric(horizontal: 10),
+//           child: IconButton(
+//             icon: const Icon(Icons.arrow_right),
+//             onPressed: _takePicture,
+//           ),
+//         ),
+//       ],
+//     ),
+//     SizedBox(height: 10),
+//     Row(
+//       mainAxisAlignment: MainAxisAlignment
+//           .end, // Aligns content to the right
+//       children: <Widget>[
+//         Container(
+//           margin: const EdgeInsets.symmetric(horizontal: 10),
+//           child: IconButton(
+//             icon: const Icon(Icons.arrow_left),
+//             onPressed: _takePicture,
+//           ),
+//         ),
+//         Expanded(
+//           child: Container(
+//             margin:
+//                 const EdgeInsets.symmetric(horizontal: 10),
+//             child: TextField(
+//               decoration: InputDecoration(
+//                 border: OutlineInputBorder(),
+//                 labelText: 'Z axis',
+//               ),
+//             ),
+//           ),
+//         ),
+//         Container(
+//           margin: const EdgeInsets.symmetric(horizontal: 10),
+//           child: IconButton(
+//             icon: const Icon(Icons.arrow_right),
+//             onPressed: _takePicture,
+//           ),
+//         ),
+//       ],
+//     ),
+//     SizedBox(height: 10),
+//     Row(
+//       mainAxisAlignment: MainAxisAlignment
+//           .end, // Aligns content to the right
+//       children: <Widget>[
+//         Container(
+//           margin: const EdgeInsets.symmetric(horizontal: 10),
+//           child: IconButton(
+//             icon: const Icon(Icons.arrow_left),
+//             onPressed: _takePicture,
+//           ),
+//         ),
+//         Expanded(
+//           child: Container(
+//             margin:
+//                 const EdgeInsets.symmetric(horizontal: 10),
+//             child: TextField(
+//               decoration: InputDecoration(
+//                 border: OutlineInputBorder(),
+//                 labelText: 'Brightness',
+//               ),
+//             ),
+//           ),
+//         ),
+//         Container(
+//           margin: const EdgeInsets.symmetric(horizontal: 10),
+//           child: IconButton(
+//             icon: const Icon(Icons.arrow_right),
+//             onPressed: _takePicture,
+//           ),
+//         ),
+//       ],
+//     ),
+//   ],
+// ),
                   if (_initialized && _cameraId > 0 && _previewSize != null)
                     Row(
                       children: [
@@ -580,8 +586,6 @@ class _CameraWindowState extends State<CameraWindow> {
                 ],
               ),
           ],
-        ),
-      ),
-    );
+        );
   }
 }
