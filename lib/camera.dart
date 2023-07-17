@@ -182,33 +182,33 @@ class _CameraWindowState extends State<CameraWindow> {
     _showInSnackBar('Picture captured to: ${file.path}');
   }
 
-  Future<void> _recordTimed(int seconds) async {
-    if (_initialized && _cameraId > 0 && !_recordingTimed) {
-      unawaited(CameraPlatform.instance
-          .onVideoRecordedEvent(_cameraId)
-          .first
-          .then((VideoRecordedEvent event) async {
-        if (mounted) {
-          setState(() {
-            _recordingTimed = false;
-          });
+  // Future<void> _recordTimed(int seconds) async {
+  //   if (_initialized && _cameraId > 0 && !_recordingTimed) {
+  //     unawaited(CameraPlatform.instance
+  //         .onVideoRecordedEvent(_cameraId)
+  //         .first
+  //         .then((VideoRecordedEvent event) async {
+  //       if (mounted) {
+  //         setState(() {
+  //           _recordingTimed = false;
+  //         });
 
-          _showInSnackBar('Video captured to: ${event.file.path}');
-        }
-      }));
+  //         _showInSnackBar('Video captured to: ${event.file.path}');
+  //       }
+  //     }));
 
-      await CameraPlatform.instance.startVideoRecording(
-        _cameraId,
-        maxVideoDuration: Duration(seconds: seconds),
-      );
+  //     await CameraPlatform.instance.startVideoRecording(
+  //       _cameraId,
+  //       maxVideoDuration: Duration(seconds: seconds),
+  //     );
 
-      if (mounted) {
-        setState(() {
-          _recordingTimed = true;
-        });
-      }
-    }
-  }
+  //     if (mounted) {
+  //       setState(() {
+  //         _recordingTimed = true;
+  //       });
+  //     }
+  //   }
+  // }
 
   Future<void> _toggleRecord() async {
     if (_initialized && _cameraId > 0) {
@@ -311,6 +311,15 @@ class _CameraWindowState extends State<CameraWindow> {
     ));
   }
 
+  String _formatCameraInfo(String cameraInfo) {
+    int index = cameraInfo.indexOf("<");
+    if (index != -1) {
+      return cameraInfo.substring(0, index);
+    } else {
+      return cameraInfo;
+    }
+  }
+
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -332,7 +341,7 @@ class _CameraWindowState extends State<CameraWindow> {
                 vertical: 5,
                 horizontal: 10,
               ),
-              child: Text(_cameraInfo),
+              child: Text(_formatCameraInfo(_cameraInfo)),
             ),
             if (_cameras.isEmpty)
               ElevatedButton(
@@ -405,15 +414,15 @@ class _CameraWindowState extends State<CameraWindow> {
                                 : 'Record Video',
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed:
-                              (_initialized && !_recording && !_recordingTimed)
-                                  ? () => _recordTimed(5)
-                                  : null,
-                          child: const Text(
-                            'Record 5 seconds',
-                          ),
-                        ),
+                        // ElevatedButton(
+                        //   onPressed:
+                        //       (_initialized && !_recording && !_recordingTimed)
+                        //           ? () => _recordTimed(5)
+                        //           : null,
+                        //   child: const Text(
+                        //     'Record 5 seconds',
+                        //   ),
+                        // ),
                         if (_cameras.length > 1) ...<Widget>[
                           ElevatedButton(
                             onPressed: _switchCamera,
