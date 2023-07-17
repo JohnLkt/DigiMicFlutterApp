@@ -40,7 +40,8 @@ class HomePage extends StatelessWidget {
           const Expanded(
             child: CameraWindow(),
           ),
-          Expanded(
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.3,
             child: Container(
               color: Colors.blue,
               height: double.infinity,
