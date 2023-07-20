@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:provider/provider.dart';
 import 'model.dart';
 import 'package:digimicapp/camera.dart';
