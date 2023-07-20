@@ -9,6 +9,7 @@ class ESPdataState extends ChangeNotifier{
   int ypos = 0;
   int zpos = 0;
   bool doingTask = false;
+  bool ishoming = false;
 
    void updateBrightness(int newBrightness) {
     brightness = newBrightness;
@@ -62,16 +63,13 @@ class ESPdataState extends ChangeNotifier{
   }
   
    Future<void> resetValue() async {
-    doingTask = !doingTask;
+    ishoming = !ishoming;
     notifyListeners();
       const String url = 'http://esp.local/reset';
 
       final Map data = {
-      'brightness': brightness,
-      'xpos': xpos,
-      'ypos': ypos,
-      'zpos': zpos,
     };
+    
       final response = await http.post(
         Uri.parse(url),
         body: json.encode(data),
@@ -79,7 +77,7 @@ class ESPdataState extends ChangeNotifier{
       if (response.statusCode != 200) {
         throw Exception('Failed to toggle lock status');
       } else {
-        doingTask = !doingTask;
+        ishoming = !ishoming;
         notifyListeners();
       }
     }

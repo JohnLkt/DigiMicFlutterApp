@@ -1,9 +1,7 @@
-// ignore_for_file: unused_import
-
+import 'package:digimicapp/controls.dart';
 import 'package:provider/provider.dart';
 import 'model.dart';
 import 'package:digimicapp/camera.dart';
-import 'package:digimicapp/controls.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -45,13 +43,10 @@ class HomePage extends StatelessWidget {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
             child: Container(
-              color: Colors.blue,
+              color: Colors.white,
               height: double.infinity,
               child: const Center(
-                child: Text(
-                  'Segment 2',
-                  style: TextStyle(fontSize: 24, color: Colors.white),
-                ),
+                child: newControlPanel(),
               ),
             ),
           ),
