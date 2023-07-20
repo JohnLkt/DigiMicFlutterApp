@@ -8,8 +8,21 @@ class ESPdataState extends ChangeNotifier{
   int xpos = 0;
   int ypos = 0;
   int zpos = 0;
+  int currentValue = 0;
+  int multiplier = 1;
   bool doingTask = false;
   bool ishoming = false;
+
+  
+  void updateValue(int newValue) {
+    currentValue = newValue;
+    notifyListeners();
+  }
+
+  void updateMultiplier(int newMultiplier) {
+    multiplier = newMultiplier;
+    notifyListeners();
+  }
 
    void updateBrightness(int newBrightness) {
     brightness = newBrightness;
@@ -69,7 +82,7 @@ class ESPdataState extends ChangeNotifier{
 
       final Map data = {
     };
-    
+
       final response = await http.post(
         Uri.parse(url),
         body: json.encode(data),
