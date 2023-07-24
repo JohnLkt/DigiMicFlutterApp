@@ -1,3 +1,4 @@
+import 'package:digimicapp/staticclass.dart';
 import 'package:flutter/material.dart';
 import 'package:digimicapp/Utils.dart';
 
@@ -6,7 +7,6 @@ class SliderLabelWidget extends StatefulWidget {
 
   final ValueChanged<int> onTopSliderChanged;
 
-
   SliderLabelWidget({
     required this.indexTop,
     required this.onTopSliderChanged,
@@ -14,10 +14,17 @@ class SliderLabelWidget extends StatefulWidget {
 
   @override
   _SliderLabelWidgetState createState() => _SliderLabelWidgetState();
-
 }
 
 class _SliderLabelWidgetState extends State<SliderLabelWidget> {
+  final labels = ['1', '10', '100', '1000'];
+  void onChanged(int value, int label) {
+    setState(() {
+      widget.onTopSliderChanged(value.toInt());
+      Variable.slidervalue = label;
+    });
+  }
+
   @override
   Widget build(BuildContext context) => SliderTheme(
         data: SliderThemeData(
@@ -34,7 +41,6 @@ class _SliderLabelWidgetState extends State<SliderLabelWidget> {
       );
 
   Widget buildSliderTopLabel() {
-    final labels = ['1', '10', '100', '1000'];
     final double min = 0;
     final double max = labels.length - 1.0;
     final divisions = labels.length - 1;
@@ -64,7 +70,8 @@ class _SliderLabelWidgetState extends State<SliderLabelWidget> {
           max: max,
           divisions: divisions,
           // label: labels[widget.indexTop],
-          onChanged: (value) => widget.onTopSliderChanged(value.toInt()),
+          onChanged: (value) =>
+              onChanged(value.toInt(), int.parse(labels[value.toInt()])),
         ),
       ],
     );
@@ -86,5 +93,4 @@ class _SliderLabelWidgetState extends State<SliderLabelWidget> {
           ).copyWith(color: color),
         ),
       );
-
 }

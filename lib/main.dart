@@ -16,13 +16,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: (context) => ESPdataState(), child: MaterialApp(
-      title: 'Expenses App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomePage(),
-    ));
+    return ChangeNotifierProvider(
+        create: (context) => ESPdataState(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Digital Microscope IEEE',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const HomePage(),
+        ));
   }
 }
 

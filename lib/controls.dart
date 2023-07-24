@@ -3,10 +3,10 @@
 import 'dart:async';
 import 'package:circle_button/circle_button.dart';
 import 'package:digimicapp/model.dart';
+import 'package:digimicapp/staticclass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
 import 'component/slide.dart';
 
 class newControlPanel extends StatefulWidget {
@@ -25,6 +25,24 @@ class _newControlPanelState extends State<newControlPanel> {
   TextEditingController _xposController = TextEditingController();
   TextEditingController _yposController = TextEditingController();
   TextEditingController _zposController = TextEditingController();
+
+  void _incrementValue(TextEditingController controller) {
+    final int currentValue = int.tryParse(controller.text) ?? 0;
+    final int newValue = currentValue + Variable.slidervalue;
+    controller.text = newValue.toString();
+    controller.selection = TextSelection.fromPosition(
+      TextPosition(offset: controller.text.length),
+    );
+  }
+
+  void _incrementValueMin(TextEditingController controller) {
+    final int currentValue = int.tryParse(controller.text) ?? 0;
+    final int newValue = currentValue - Variable.slidervalue;
+    controller.text = newValue.toString();
+    controller.selection = TextSelection.fromPosition(
+      TextPosition(offset: controller.text.length),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +65,9 @@ class _newControlPanelState extends State<newControlPanel> {
           Row(
             children: [
               IconButton(
-                   onPressed: () {},
+                  onPressed: () {
+                    _incrementValueMin(_brightnessController);
+                  },
                   icon: Icon(Icons.arrow_left)),
               Expanded(
                 child: TextField(
@@ -60,7 +80,11 @@ class _newControlPanelState extends State<newControlPanel> {
                       labelText: 'Enter Brightness'),
                 ),
               ),
-              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_right))
+              IconButton(
+                  onPressed: () {
+                    _incrementValue(_brightnessController);
+                  },
+                  icon: Icon(Icons.arrow_right))
             ],
           ),
           const SizedBox(
@@ -68,7 +92,11 @@ class _newControlPanelState extends State<newControlPanel> {
           ),
           Row(
             children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_left)),
+              IconButton(
+                  onPressed: () {
+                    _incrementValueMin(_xposController);
+                  },
+                  icon: Icon(Icons.arrow_left)),
               Expanded(
                 child: TextField(
                   controller: _xposController,
@@ -90,7 +118,11 @@ class _newControlPanelState extends State<newControlPanel> {
                       labelText: 'Enter X Position'),
                 ),
               ),
-              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_right))
+              IconButton(
+                  onPressed: () {
+                    _incrementValue(_xposController);
+                  },
+                  icon: Icon(Icons.arrow_right))
             ],
           ),
           const SizedBox(
@@ -98,7 +130,11 @@ class _newControlPanelState extends State<newControlPanel> {
           ),
           Row(
             children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_left)),
+              IconButton(
+                  onPressed: () {
+                    _incrementValueMin(_yposController);
+                  },
+                  icon: Icon(Icons.arrow_left)),
               Expanded(
                 child: TextField(
                   controller: _yposController,
@@ -120,7 +156,11 @@ class _newControlPanelState extends State<newControlPanel> {
                       labelText: 'Enter Y Position'),
                 ),
               ),
-              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_right))
+              IconButton(
+                  onPressed: () {
+                    _incrementValue(_yposController);
+                  },
+                  icon: Icon(Icons.arrow_right))
             ],
           ),
           const SizedBox(
@@ -128,7 +168,11 @@ class _newControlPanelState extends State<newControlPanel> {
           ),
           Row(
             children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_left)),
+              IconButton(
+                  onPressed: () {
+                    _incrementValue(_zposController);
+                  },
+                  icon: Icon(Icons.arrow_left)),
               Expanded(
                 child: TextField(
                   controller: _zposController,
@@ -150,7 +194,11 @@ class _newControlPanelState extends State<newControlPanel> {
                       labelText: 'Enter Z Position'),
                 ),
               ),
-              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_right))
+              IconButton(
+                  onPressed: () {
+                    _incrementValueMin(_zposController);
+                  },
+                  icon: Icon(Icons.arrow_right))
             ],
           ),
           const SizedBox(
