@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -28,7 +30,19 @@ class ESPdataState extends ChangeNotifier{
     brightness = newBrightness;
     notifyListeners();
   }
-  
+ 
+   void subtractAndUpdateText(int subtractAmount, TextEditingController controller) {
+      int currentValue = int.tryParse(controller.text) ?? 0;
+      int result = currentValue - subtractAmount;
+      controller.text = result.toString();
+    }
+
+  void addValue(int currentValue, int addAmount) {
+    currentValue = (currentValue + addAmount).clamp(1, 1000);
+    updateValue(currentValue);
+    notifyListeners();
+  }
+
   void updateXPos(int newXPos) {
     xpos = newXPos;
     notifyListeners();
@@ -62,7 +76,7 @@ class ESPdataState extends ChangeNotifier{
 
 
     const String url = 'http://esp.local/pos';
-    final response = await http.post(
+    final response =  await http.post(
       Uri.parse(url),
       body: json.encode(data),
     );

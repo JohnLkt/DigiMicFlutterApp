@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_field, prefer_final_fields
 
 import 'dart:async';
 import 'package:circle_button/circle_button.dart';
@@ -7,35 +7,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class newControlPanel extends StatelessWidget {
+import 'component/slide.dart';
+
+class newControlPanel extends StatefulWidget {
   const newControlPanel({
     super.key,
   });
 
   @override
+  State<newControlPanel> createState() => _newControlPanelState();
+}
+
+class _newControlPanelState extends State<newControlPanel> {
+  int indexTop = 0;
+  double valueBottom = 20;
+  TextEditingController _brightnessController = TextEditingController();
+  TextEditingController _xposController = TextEditingController();
+  TextEditingController _yposController = TextEditingController();
+  TextEditingController _zposController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
     final espDataState = Provider.of<ESPdataState>(context);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SliderLabelWidget(
+            indexTop: indexTop,
+            onTopSliderChanged: (value) {
+              setState(() {
+                indexTop = value.toInt();
+              });
+            },
+          ),
+          const SizedBox(height: 20),
           Row(
             children: [
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_left)),
+              IconButton(
+                   onPressed: () {},
+                  icon: Icon(Icons.arrow_left)),
               Expanded(
                 child: TextField(
-                  onChanged: (newBrightness) {
-                    if (newBrightness.trim().isEmpty) {
-                      espDataState.updateBrightness(
-                          0); // Set a default value when input is empty
-                    } else {
-                      final brightness = int.tryParse(newBrightness);
-                      if (brightness != null) {
-                        espDataState.updateBrightness(brightness);
-                      }
-                    }
-                  },
+                  controller: _brightnessController,
+                  onChanged: (newBrightness) {},
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -43,22 +60,22 @@ class newControlPanel extends StatelessWidget {
                       labelText: 'Enter Brightness'),
                 ),
               ),
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_right))
+              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_right))
             ],
           ),
           const SizedBox(
             height: 10,
           ),
           Row(
-            
             children: [
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_left)),
+              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_left)),
               Expanded(
                 child: TextField(
+                  controller: _xposController,
                   onChanged: (newXPos) {
                     if (newXPos.trim().isEmpty) {
-                      espDataState
-                          .updateXPos(0); // Set a default value when input is empty
+                      espDataState.updateXPos(
+                          0); // Set a default value when input is empty
                     } else {
                       final xpos = int.tryParse(newXPos);
                       if (xpos != null) {
@@ -73,22 +90,22 @@ class newControlPanel extends StatelessWidget {
                       labelText: 'Enter X Position'),
                 ),
               ),
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_right))
+              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_right))
             ],
           ),
           const SizedBox(
             height: 10,
           ),
           Row(
-            
             children: [
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_left)),
+              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_left)),
               Expanded(
                 child: TextField(
+                  controller: _yposController,
                   onChanged: (newYPos) {
                     if (newYPos.trim().isEmpty) {
-                      espDataState
-                          .updateYPos(0); // Set a default value when input is empty
+                      espDataState.updateYPos(
+                          0); // Set a default value when input is empty
                     } else {
                       final ypos = int.tryParse(newYPos);
                       if (ypos != null) {
@@ -103,22 +120,22 @@ class newControlPanel extends StatelessWidget {
                       labelText: 'Enter Y Position'),
                 ),
               ),
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_right))
+              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_right))
             ],
           ),
           const SizedBox(
             height: 10,
           ),
           Row(
-            
             children: [
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_left)),
+              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_left)),
               Expanded(
                 child: TextField(
+                  controller: _zposController,
                   onChanged: (newZPos) {
                     if (newZPos.trim().isEmpty) {
-                      espDataState
-                          .updateZPos(0); // Set a default value when input is empty
+                      espDataState.updateZPos(
+                          0); // Set a default value when input is empty
                     } else {
                       final zpos = int.tryParse(newZPos);
                       if (zpos != null) {
@@ -133,7 +150,7 @@ class newControlPanel extends StatelessWidget {
                       labelText: 'Enter Z Position'),
                 ),
               ),
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_right))
+              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_right))
             ],
           ),
           const SizedBox(
@@ -159,9 +176,13 @@ class newControlPanel extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
                   onPressed: () {
+                    _brightnessController.clear();
+                    _xposController.clear();
+                    _yposController.clear();
+                    _zposController.clear();
                     espDataState.resetValue();
                   },
-                  child: const Text('Reset Value'))
+                  child: const Text('Reset Value')),
             ],
           ),
         ],
