@@ -170,7 +170,7 @@ class _newControlPanelState extends State<newControlPanel> {
             children: [
               IconButton(
                   onPressed: () {
-                    _incrementValue(_zposController);
+                    _incrementValueMin(_zposController);
                   },
                   icon: Icon(Icons.arrow_left)),
               Expanded(
@@ -196,7 +196,7 @@ class _newControlPanelState extends State<newControlPanel> {
               ),
               IconButton(
                   onPressed: () {
-                    _incrementValueMin(_zposController);
+                    _incrementValue(_zposController);
                   },
                   icon: Icon(Icons.arrow_right))
             ],
