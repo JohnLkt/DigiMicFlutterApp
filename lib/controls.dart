@@ -74,6 +74,10 @@ class _newControlPanelState extends State<newControlPanel> {
               Expanded(
                 child: TextField(
                   controller: _brightnessController,
+                   inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    
+                  ],
                   onChanged: (newBrightness) {
                     if (newBrightness.trim().isEmpty) {
                       espDataState.updateBrightness(
@@ -109,12 +113,17 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValueMin(_xposController);
-                    espDataState.updateXPos(_brightnessController.text as int);
+                    int xpos = int.tryParse(_xposController.text) ?? 0;
+                    espDataState.updateZPos(xpos);
                   },
                   icon: Icon(Icons.arrow_left)),
               Expanded(
                 child: TextField(
                   controller: _xposController,
+                   inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    
+                  ],
                   onChanged: (newXPos) {
                     if (newXPos.trim().isEmpty) {
                       espDataState.updateXPos(
@@ -136,7 +145,8 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValue(_xposController);
-                    espDataState.updateXPos(_xposController.text as int);
+                    int xpos = int.tryParse(_xposController.text) ?? 0;
+                    espDataState.updateZPos(xpos);
                   },
                   icon: Icon(Icons.arrow_right))
             ],
@@ -156,6 +166,10 @@ class _newControlPanelState extends State<newControlPanel> {
               Expanded(
                 child: TextField(
                   controller: _yposController,
+                   inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    
+                  ],
                   onChanged: (newYPos) {
                     if (newYPos.trim().isEmpty) {
                       espDataState.updateYPos(
@@ -191,12 +205,17 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValueMin(_zposController);
-                    espDataState.updateZPos(_zposController.text as int);
+                    int zpos = int.tryParse(_zposController.text) ?? 0;
+                    espDataState.updateZPos(zpos);
                   },
                   icon: Icon(Icons.arrow_left)),
               Expanded(
                 child: TextField(
                   controller: _zposController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+
+                  ],
                   onChanged: (newZPos) {
                     if (newZPos.trim().isEmpty) {
                       espDataState.updateZPos(
@@ -218,7 +237,8 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValue(_zposController);
-                    espDataState.updateZPos(_zposController.text as int);
+                    int zpos = int.tryParse(_zposController.text) ?? 0;
+                    espDataState.updateZPos(zpos);
                   },
                   icon: Icon(Icons.arrow_right))
             ],
@@ -234,7 +254,7 @@ class _newControlPanelState extends State<newControlPanel> {
                       primary: Colors.black,
                       onPrimary: Colors.white,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
+                          borderRadius: BorderRadius.circular(9))),
                   onPressed: () {
                     espDataState.submitValues();
                   },
@@ -244,7 +264,7 @@ class _newControlPanelState extends State<newControlPanel> {
                       primary: Colors.black,
                       onPrimary: Colors.white,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
+                          borderRadius: BorderRadius.circular(9))),
                   onPressed: () {
                     _brightnessController.clear();
                     _xposController.clear();

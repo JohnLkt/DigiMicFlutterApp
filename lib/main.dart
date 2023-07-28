@@ -23,7 +23,15 @@ class MyApp extends StatelessWidget {
           title: 'Digital Microscope IEEE',
           theme: ThemeData(
             primarySwatch: Colors.blue,
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+               shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(9),
+                ),
+              ),
+            )
           ),
+        
           home: const HomePage(),
         ));
   }
