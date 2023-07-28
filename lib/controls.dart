@@ -67,12 +67,24 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValueMin(_brightnessController);
+                    int brightness = int.tryParse(_brightnessController.text) ?? 0;
+                    espDataState.updateZPos(brightness);
                   },
                   icon: Icon(Icons.arrow_left)),
               Expanded(
                 child: TextField(
                   controller: _brightnessController,
-                  onChanged: (newBrightness) {},
+                  onChanged: (newBrightness) {
+                    if (newBrightness.trim().isEmpty) {
+                      espDataState.updateBrightness(
+                          0); // Set a default value when input is empty
+                    } else {
+                      final brightness = int.tryParse(newBrightness);
+                      if (brightness != null) {
+                        espDataState.updateBrightness(brightness);
+                      }
+                    }
+                  },
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -83,6 +95,8 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValue(_brightnessController);
+                     int brightness = int.tryParse(_brightnessController.text) ?? 0;
+                    espDataState.updateZPos(brightness);
                   },
                   icon: Icon(Icons.arrow_right))
             ],
@@ -95,6 +109,7 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValueMin(_xposController);
+                    espDataState.updateXPos(_brightnessController.text as int);
                   },
                   icon: Icon(Icons.arrow_left)),
               Expanded(
@@ -121,6 +136,7 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValue(_xposController);
+                    espDataState.updateXPos(_xposController.text as int);
                   },
                   icon: Icon(Icons.arrow_right))
             ],
@@ -133,6 +149,8 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValueMin(_yposController);
+                    int yPos = int.tryParse(_yposController.text) ?? 0;
+                    espDataState.updateZPos(yPos);
                   },
                   icon: Icon(Icons.arrow_left)),
               Expanded(
@@ -159,6 +177,8 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValue(_yposController);
+                    int yPos = int.tryParse(_yposController.text) ?? 0;
+                    espDataState.updateZPos(yPos);
                   },
                   icon: Icon(Icons.arrow_right))
             ],
@@ -171,6 +191,7 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValueMin(_zposController);
+                    espDataState.updateZPos(_zposController.text as int);
                   },
                   icon: Icon(Icons.arrow_left)),
               Expanded(
@@ -197,6 +218,7 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                   onPressed: () {
                     _incrementValue(_zposController);
+                    espDataState.updateZPos(_zposController.text as int);
                   },
                   icon: Icon(Icons.arrow_right))
             ],

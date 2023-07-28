@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:digimicapp/staticclass.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -31,17 +32,16 @@ class ESPdataState extends ChangeNotifier{
     notifyListeners();
   }
  
-   void subtractAndUpdateText(int subtractAmount, TextEditingController controller) {
-      int currentValue = int.tryParse(controller.text) ?? 0;
-      int result = currentValue - subtractAmount;
-      controller.text = result.toString();
-    }
-
-  void addValue(int currentValue, int addAmount) {
-    currentValue = (currentValue + addAmount).clamp(1, 1000);
-    updateValue(currentValue);
-    notifyListeners();
+  Future<void> incrementValue(TextEditingController controller) async {
+    final int currentValue = int.tryParse(controller.text) ?? 0;
+    final int newValue = currentValue + Variable.slidervalue;
+    controller.text = newValue.toString();
+    controller.selection = TextSelection.fromPosition(
+      TextPosition(offset: controller.text.length),
+    );
   }
+
+
 
   void updateXPos(int newXPos) {
     xpos = newXPos;
