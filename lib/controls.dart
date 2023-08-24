@@ -105,7 +105,7 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                 onPressed: () {
                   _incrementValue(_brightnessController,
-                      255); // Replace 100 with your max value
+                      255);
                   final brightness = int.tryParse(_brightnessController.text);
                   if (brightness != null) {
                     espDataState.updateBrightness(brightness);
@@ -123,8 +123,10 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                 onPressed: () {
                   _incrementValueMin(_xposController, 0);
-                  espDataState
-                      .updateXPos(int.tryParse(_xposController.text) ?? 0);
+                      final xpos = int.tryParse(newXPos);
+                      if (xpos != null) {
+                        espDataState.updateXPos(xpos);
+                      }
                 },
                 icon: Icon(Icons.arrow_left),
               ),
@@ -156,9 +158,11 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                 onPressed: () {
                   _incrementValue(
-                      _xposController, 6000); // Replace 100 with your max value
-                  espDataState
-                      .updateXPos(int.tryParse(_xposController.text) ?? 0);
+                      _xposController, 6000);
+                      final xpos = int.tryParse(newXPos);
+                      if (xpos != null) {
+                        espDataState.updateXPos(xpos);
+                      }
                 },
                 icon: Icon(Icons.arrow_right),
               ),
@@ -172,8 +176,10 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                 onPressed: () {
                   _incrementValueMin(_yposController, 0);
-                  espDataState
-                      .updateYPos(int.tryParse(_yposController.text) ?? 0);
+                      final ypos = int.tryParse(newYPos);
+                      if (ypos != null) {
+                        espDataState.updateYPos(ypos);
+                      }
                 },
                 icon: Icon(Icons.arrow_left),
               ),
@@ -205,9 +211,11 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                 onPressed: () {
                   _incrementValue(
-                      _yposController, 6000); // Replace 100 with your max value
-                  espDataState
-                      .updateYPos(int.tryParse(_yposController.text) ?? 0);
+                      _yposController, 6000);
+                      final ypos = int.tryParse(newYPos);
+                      if (ypos != null) {
+                        espDataState.updateYPos(ypos);
+                      }
                 },
                 icon: Icon(Icons.arrow_right),
               ),
@@ -221,8 +229,10 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                 onPressed: () {
                   _incrementValueMin(_zposController, 0);
-                  espDataState
-                      .updateZPos(int.tryParse(_zposController.text) ?? 0);
+                      final zpos = int.tryParse(newZPos);
+                      if (zpos != null) {
+                        espDataState.updateZPos(zpos);
+                      }
                 },
                 icon: Icon(Icons.arrow_left),
               ),
@@ -254,9 +264,11 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                 onPressed: () {
                   _incrementValue(
-                      _zposController, 6000); // Replace 100 with your max value
-                  espDataState
-                      .updateZPos(int.tryParse(_zposController.text) ?? 0);
+                      _zposController, 6000);
+                      final zpos = int.tryParse(newZPos);
+                      if (zpos != null) {
+                        espDataState.updateZPos(zpos);
+                      }
                 },
                 icon: Icon(Icons.arrow_right),
               ),

@@ -28,9 +28,13 @@ class _SliderLabelWidgetState extends State<SliderLabelWidget> {
   @override
   Widget build(BuildContext context) => SliderTheme(
         data: SliderThemeData(
-          /// ticks in between
-          activeTickMarkColor: Colors.transparent,
-          inactiveTickMarkColor: Colors.transparent,
+          trackHeight: 10,
+          trackShape: RoundedRectSliderTrackShape(),
+          thumbColor: Colors.black,
+          overlayColor: Colors.transparent,
+          activeTrackColor: Colors.black.withOpacity(0.7),
+          activeTickMarkColor: Colors.black.withOpacity(0.7),
+          inactiveTickMarkColor: Colors.blue.withOpacity(0.7),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +59,7 @@ class _SliderLabelWidgetState extends State<SliderLabelWidget> {
               labels,
               (index, label) {
                 final selectedColor = Colors.black;
-                final unselectedColor = Colors.black.withOpacity(0.3);
+                final unselectedColor = Colors.transparent.withOpacity(0.5);
                 final isSelected = index <= widget.indexTop;
                 final color = isSelected ? selectedColor : unselectedColor;
 
