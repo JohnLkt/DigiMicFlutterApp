@@ -15,8 +15,7 @@ class newControlPanel extends StatefulWidget {
 class _newControlPanelState extends State<newControlPanel> {
   int indexTop = 0;
   double valueBottom = 20;
-  TextEditingController _brightnessController =
-      TextEditingController(text: '0');
+  TextEditingController _brightnessController = TextEditingController(text: '0');
   TextEditingController _xposController = TextEditingController(text: '0');
   TextEditingController _yposController = TextEditingController(text: '0');
   TextEditingController _zposController = TextEditingController(text: '0');
@@ -123,7 +122,7 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                 onPressed: () {
                   _incrementValueMin(_xposController, 0);
-                      final xpos = int.tryParse(newXPos);
+                      final xpos = int.tryParse(_xposController.text);
                       if (xpos != null) {
                         espDataState.updateXPos(xpos);
                       }
@@ -159,7 +158,7 @@ class _newControlPanelState extends State<newControlPanel> {
                 onPressed: () {
                   _incrementValue(
                       _xposController, 6000);
-                      final xpos = int.tryParse(newXPos);
+                      final xpos = int.tryParse(_xposController.text);
                       if (xpos != null) {
                         espDataState.updateXPos(xpos);
                       }
@@ -176,7 +175,7 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                 onPressed: () {
                   _incrementValueMin(_yposController, 0);
-                      final ypos = int.tryParse(newYPos);
+                      final ypos = int.tryParse(_yposController.text);
                       if (ypos != null) {
                         espDataState.updateYPos(ypos);
                       }
@@ -212,7 +211,7 @@ class _newControlPanelState extends State<newControlPanel> {
                 onPressed: () {
                   _incrementValue(
                       _yposController, 6000);
-                      final ypos = int.tryParse(newYPos);
+                      final ypos = int.tryParse(_yposController.text);
                       if (ypos != null) {
                         espDataState.updateYPos(ypos);
                       }
@@ -229,7 +228,7 @@ class _newControlPanelState extends State<newControlPanel> {
               IconButton(
                 onPressed: () {
                   _incrementValueMin(_zposController, 0);
-                      final zpos = int.tryParse(newZPos);
+                      final zpos = int.tryParse(_zposController.text);
                       if (zpos != null) {
                         espDataState.updateZPos(zpos);
                       }
@@ -265,7 +264,7 @@ class _newControlPanelState extends State<newControlPanel> {
                 onPressed: () {
                   _incrementValue(
                       _zposController, 6000);
-                      final zpos = int.tryParse(newZPos);
+                      final zpos = int.tryParse(_zposController.text);
                       if (zpos != null) {
                         espDataState.updateZPos(zpos);
                       }
