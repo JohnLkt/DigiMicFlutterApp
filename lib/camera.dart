@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 import 'package:camera_platform_interface/camera_platform_interface.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,6 @@ class CameraWindow extends StatefulWidget {
 }
 
 class _CameraWindowState extends State<CameraWindow> {
-  
   String _cameraInfo = 'Unknown';
   List<CameraDescription> _cameras = <CameraDescription>[];
   int _cameraIndex = 0;
@@ -25,7 +26,7 @@ class _CameraWindowState extends State<CameraWindow> {
   ResolutionPreset _resolutionPreset = ResolutionPreset.veryHigh;
   StreamSubscription<CameraErrorEvent>? _errorStreamSubscription;
   StreamSubscription<CameraClosingEvent>? _cameraClosingStreamSubscription;
-  
+
   @override
   void initState() {
     super.initState();
@@ -42,7 +43,7 @@ class _CameraWindowState extends State<CameraWindow> {
     _cameraClosingStreamSubscription = null;
     super.dispose();
   }
-  
+
   /// Fetches list of available cameras from camera_windows plugin.
   Future<void> _fetchCameras() async {
     String cameraInfo;
@@ -69,7 +70,7 @@ class _CameraWindowState extends State<CameraWindow> {
       });
     }
   }
-  
+
   /// Initializes the camera on the device.
   Future<void> _initializeCamera() async {
     assert(!_initialized);
@@ -172,7 +173,6 @@ class _CameraWindowState extends State<CameraWindow> {
     }
   }
 
-  
   Widget _buildPreview() {
     return CameraPlatform.instance.buildPreview(_cameraId);
   }
@@ -180,34 +180,6 @@ class _CameraWindowState extends State<CameraWindow> {
   Future<void> _takePicture() async {
     final XFile file = await CameraPlatform.instance.takePicture(_cameraId);
     _showInSnackBar('Picture captured to: ${file.path}');
-  }
-
-  Future<void> _recordTimed(int seconds) async {
-    if (_initialized && _cameraId > 0 && !_recordingTimed) {
-      unawaited(CameraPlatform.instance
-          .onVideoRecordedEvent(_cameraId)
-          .first
-          .then((VideoRecordedEvent event) async {
-        if (mounted) {
-          setState(() {
-            _recordingTimed = false;
-          });
-
-          _showInSnackBar('Video captured to: ${event.file.path}');
-        }
-      }));
-
-      await CameraPlatform.instance.startVideoRecording(
-        _cameraId,
-        maxVideoDuration: Duration(seconds: seconds),
-      );
-
-      if (mounted) {
-        setState(() {
-          _recordingTimed = true;
-        });
-      }
-    }
   }
 
   Future<void> _toggleRecord() async {
@@ -311,7 +283,15 @@ class _CameraWindowState extends State<CameraWindow> {
     ));
   }
 
-  
+  String _formatCameraInfo(String cameraInfo) {
+    int index = cameraInfo.indexOf("<");
+    if (index != -1) {
+      return cameraInfo.substring(0, index);
+    } else {
+      return cameraInfo;
+    }
+  }
+
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -326,21 +306,14 @@ class _CameraWindowState extends State<CameraWindow> {
       );
     }).toList();
 
-    
-    return MaterialApp(
-      scaffoldMessengerKey: _scaffoldMessengerKey,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: ListView(
+    return ListView(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 5,
                 horizontal: 10,
               ),
-              child: Text(_cameraInfo),
+              child: Text(_formatCameraInfo(_cameraInfo)),
             ),
             if (_cameras.isEmpty)
               ElevatedButton(
@@ -348,99 +321,109 @@ class _CameraWindowState extends State<CameraWindow> {
                 child: const Text('Re-check available cameras'),
               ),
             if (_cameras.isNotEmpty)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  DropdownButton<ResolutionPreset>(
-                    value: _resolutionPreset,
-                    onChanged: (ResolutionPreset? value) {
-                      if (value != null) {
-                        _onResolutionChange(value);
-                      }
-                    },
-                    items: resolutionItems,
-                  ),
-                  const SizedBox(width: 20),
-                  const Text('Audio:'),
-                  Switch(
-                      value: _recordAudio,
-                      onChanged: (bool state) => _onAudioChange(state)),
-                  const SizedBox(width: 20),
-                  ElevatedButton(
-                    onPressed: _initialized
-                        ? _disposeCurrentCamera
-                        : _initializeCamera,
-                    child:
-                        Text(_initialized ? 'Dispose camera' : 'Create camera'),
-                  ),
-                  const SizedBox(width: 5),
-                  ElevatedButton(
-                    onPressed: _initialized ? _takePicture : null,
-                    child: const Text('Take picture'),
-                  ),
-                  const SizedBox(width: 5),
-                  ElevatedButton(
-                    onPressed: _initialized ? _togglePreview : null,
-                    child: Text(
-                      _previewPaused ? 'Resume preview' : 'Pause preview',
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      spacing: 25.00,
+                      children: <Widget>[
+                        DropdownButton<ResolutionPreset>(
+                          value: _resolutionPreset,
+                          onChanged: (ResolutionPreset? value) {
+                            if (value != null) {
+                              _onResolutionChange(value);
+                            }
+                          },
+                          items: resolutionItems,
+                        ),
+                        SizedBox(
+                          width: 100,
+                          height: 48,
+                          child: Row(
+                            children: [
+                              const Text('Audio:'),
+                              Switch(
+                                value: _recordAudio,
+                                onChanged: (bool state) => _onAudioChange(state),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 5),
-                  ElevatedButton(
-                    onPressed: _initialized ? _toggleRecord : null,
-                    child: Text(
-                      (_recording || _recordingTimed)
-                          ? 'Stop recording'
-                          : 'Record Video',
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      spacing: 5.00,
+                      children: <Widget>[
+                        ElevatedButton(
+                          onPressed: _initialized
+                              ? _disposeCurrentCamera
+                              : _initializeCamera,
+                          child: Text(
+                              _initialized ? 'Dispose camera' : 'Create camera'),
+                        ),
+                        ElevatedButton(
+                          onPressed: _initialized ? _takePicture : null,
+                          child: const Text('Take picture'),
+                        ),
+                        ElevatedButton(
+                          onPressed: _initialized ? _togglePreview : null,
+                          child: Text(
+                            _previewPaused ? 'Resume preview' : 'Pause preview',
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: _initialized ? _toggleRecord : null,
+                          child: Text(
+                            (_recording || _recordingTimed)
+                                ? 'Stop recording'
+                                : 'Record Video',
+                          ),
+                        ),
+                        if (_cameras.length > 1) ...<Widget>[
+                          ElevatedButton(
+                            onPressed: _switchCamera,
+                            child: const Text(
+                              'Switch camera',
+                            ),
+                          ),
+                        ]
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 5),
-                  ElevatedButton(
-                    onPressed: (_initialized && !_recording && !_recordingTimed)
-                        ? () => _recordTimed(5)
-                        : null,
-                    child: const Text(
-                      'Record 5 seconds',
+                  if (_initialized && _cameraId > 0 && _previewSize != null)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            constraints: const BoxConstraints(
+                              maxWidth: 1020,
+                            ),
+                            child: AspectRatio(
+                              aspectRatio:
+                                  _previewSize!.width / _previewSize!.height,
+                              child: _buildPreview(),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  if (_cameras.length > 1) ...<Widget>[
-                    const SizedBox(width: 5),
-                    ElevatedButton(
-                      onPressed: _switchCamera,
-                      child: const Text(
-                        'Switch camera',
+                  if (_previewSize != null)
+                    Center(
+                      child: Text(
+                        'Preview size: ${_previewSize!.width.toStringAsFixed(0)}x${_previewSize!.height.toStringAsFixed(0)}',
                       ),
                     ),
-                  ]
                 ],
               ),
-            const SizedBox(height: 5),
-            if (_initialized && _cameraId > 0 && _previewSize != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                ),
-                child: Align(
-                  child: Container(
-                    constraints: const BoxConstraints(
-                      maxHeight: 500,
-                    ),
-                    child: AspectRatio(
-                      aspectRatio: _previewSize!.width / _previewSize!.height,
-                      child: _buildPreview(),
-                    ),
-                  ),
-                ),
-              ),
-            if (_previewSize != null)
-              Center(
-                child: Text(
-                  'Preview size: ${_previewSize!.width.toStringAsFixed(0)}x${_previewSize!.height.toStringAsFixed(0)}',
-                ),
-              ),
           ],
-        ),
-      ),
-    );
+        );
   }
 }
