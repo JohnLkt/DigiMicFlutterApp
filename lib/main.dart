@@ -50,8 +50,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  
   @override
+  
   Widget build(BuildContext context) {
+    final digimicState = Provider.of<DigimicState>(context);
+
+    // Show snackbar when snackBarError changes
+    if (digimicState.snackBarError.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(digimicState.snackBarError),
+          ),
+        );
+      });
+    }
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Digital Microscope IEEE'),
@@ -64,11 +80,14 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
             child: Container(
-              color: Colors.white,
               height: double.infinity,
-              child: const Center(
-                child: Material(
-                  child: ControlPanel(),
+              color: Colors.white,
+              child: const SingleChildScrollView(
+                child: Center(
+                  child: Material(
+                    color: Colors.white,
+                    child: ControlPanel(),
+                  ),
                 ),
               ),
             ),
@@ -78,3 +97,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

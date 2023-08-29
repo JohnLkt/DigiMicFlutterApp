@@ -28,15 +28,16 @@ class _ControlPanelState extends State<ControlPanel> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-              CoordinateDisplay(),
-              SizedBox(height: 40),
-              Dpads(),
-              SizedBox(height: 40),
-              BrightnessSlider(),
-              MultiplierSlider()
-            ],
-          ),
-      );
+          SizedBox(height: 40),
+          CoordinateDisplay(),
+          SizedBox(height: 40),
+          Dpads(),
+          SizedBox(height: 40),
+          BrightnessSlider(),
+          MultiplierSlider()
+        ],
+      ),
+    );
   }
 }
 
