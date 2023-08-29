@@ -1,10 +1,6 @@
-// ignore_for_file: unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_field, prefer_final_fields
-
-import 'dart:async';
 import 'dart:math';
 import 'package:digimicapp/model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ControlPanel extends StatefulWidget {
@@ -22,8 +18,8 @@ class _ControlPanelState extends State<ControlPanel> {
   @override
   Widget build(BuildContext context) {
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -84,9 +80,9 @@ class _DpadsState extends State<Dpads> {
                   digimicState.movePositiveZ();
                 }
               }, 
-              icon: Icon(Icons.arrow_drop_up)
+              icon: const Icon(Icons.arrow_drop_up)
             ),
-            SizedBox(
+            const SizedBox(
               height: 60,
               width: 60,
             ),
@@ -100,7 +96,7 @@ class _DpadsState extends State<Dpads> {
                   digimicState.moveNegativeZ();
                 }
               }, 
-              icon: Icon(Icons.arrow_drop_down)
+              icon: const Icon(Icons.arrow_drop_down)
             ),
           ],
         ),
@@ -119,7 +115,7 @@ class _DpadsState extends State<Dpads> {
                       digimicState.moveNegativeX();
                     }
                   },  
-                  icon: Icon(Icons.arrow_left)
+                  icon: const Icon(Icons.arrow_left)
                 ),
               ],
             ),
@@ -135,9 +131,9 @@ class _DpadsState extends State<Dpads> {
                       digimicState.movePositiveY();
                     }
                   },  
-                  icon: Icon(Icons.arrow_drop_up)
+                  icon: const Icon(Icons.arrow_drop_up)
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 60,
                   width: 60,
                 ),
@@ -151,7 +147,7 @@ class _DpadsState extends State<Dpads> {
                       digimicState.moveNegativeY();
                     }
                   },  
-                  icon: Icon(Icons.arrow_drop_down)
+                  icon: const Icon(Icons.arrow_drop_down)
                 ),
               ],
             ),
@@ -167,7 +163,7 @@ class _DpadsState extends State<Dpads> {
                       digimicState.movePositiveX();
                     }
                   },  
-                  icon: Icon(Icons.arrow_right)
+                  icon: const Icon(Icons.arrow_right)
                 ),
               ],
             ),

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:async';
 import 'package:camera_platform_interface/camera_platform_interface.dart';
 import 'package:flutter/material.dart';
@@ -402,7 +400,7 @@ class _CameraWindowState extends State<CameraWindow> {
                       children: [
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             constraints: const BoxConstraints(
                               maxWidth: 1020,
                             ),
