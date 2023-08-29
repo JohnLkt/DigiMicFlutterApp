@@ -2,23 +2,20 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:digimicapp/staticclass.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-class ESPdataState extends ChangeNotifier{
+class DigimicState extends ChangeNotifier{
   int brightness = 0;
   int xpos = 0;
   int ypos = 0;
   int zpos = 0;
-  int currentValue = 0;
   int multiplier = 1;
   bool doingTask = false;
-  bool ishoming = false;
+  String snackBarError = '';
 
-  
-  void updateValue(int newValue) {
-    currentValue = newValue;
+  void updateBrightness(int newBrightness) {
+    brightness = newBrightness;
     notifyListeners();
   }
 
@@ -27,85 +24,65 @@ class ESPdataState extends ChangeNotifier{
     notifyListeners();
   }
 
-   void updateBrightness(int newBrightness) {
-    brightness = newBrightness;
-    notifyListeners();
-  }
- 
-  Future<void> incrementValue(TextEditingController controller) async {
-    final int currentValue = int.tryParse(controller.text) ?? 0;
-    final int newValue = currentValue + Variable.slidervalue;
-    controller.text = newValue.toString();
-    controller.selection = TextSelection.fromPosition(
-      TextPosition(offset: controller.text.length),
-    );
-  }
-
-
-
-  void updateXPos(int newXPos) {
-    xpos = newXPos;
+  void movePositiveX() {
+    xpos = xpos + multiplier;
     notifyListeners();
   }
 
-  void updateYPos(int newYPos) {
-    ypos = newYPos;
+  void moveNegativeX() {
+    xpos = xpos - multiplier;
     notifyListeners();
   }
 
-  void updateZPos(int newZPos) {
-    zpos = newZPos;
+  void movePositiveY() {
+    ypos = ypos + multiplier;
     notifyListeners();
   }
 
-  void toggleTaskStatus() {
-    doingTask = !doingTask;
+  void moveNegativeY() {
+    ypos = ypos - multiplier;
     notifyListeners();
   }
 
-  Future<void> submitValues() async {
-    doingTask = !doingTask;
+  void movePositiveZ() {
+    zpos = zpos + multiplier;
     notifyListeners();
+  }
 
-    final Map data = {
-      'brightness': brightness,
-      'xpos': xpos,
-      'ypos': ypos,
-      'zpos': zpos,
-    };
+  void moveNegativeZ() {
+    zpos = zpos - multiplier;
+    notifyListeners();
+  }
 
-
-    const String url = 'http://esp.local/pos';
-    final response =  await http.post(
-      Uri.parse(url),
-      body: json.encode(data),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to toggle lock status');
-    } else {
+  Future<void> sendToMicroscope() async {
+    // check if doing task
+    if (!doingTask) {
+      // do task
       doingTask = !doingTask;
       notifyListeners();
-    }
-  }
-  
-   Future<void> resetValue() async {
-    ishoming = !ishoming;
-    notifyListeners();
-      const String url = 'http://esp.local/reset';
 
       final Map data = {
-    };
+        'brightness': brightness,
+        'xpos': xpos,
+        'ypos': ypos,
+        'zpos': zpos,
+      };
 
-      final response = await http.post(
+      const String url = 'http://192.168.4.1/pos';
+      // 192.168.4.1 is the default IP address of ESP softAP
+
+      final response =  await http.post(
         Uri.parse(url),
         body: json.encode(data),
       );
+
       if (response.statusCode != 200) {
-        throw Exception('Failed to toggle lock status');
+        snackBarError = "Failed to send data to microscope, please check your connection and try again";
+        notifyListeners();
       } else {
-        ishoming = !ishoming;
+        doingTask = !doingTask;
         notifyListeners();
       }
     }
+  }
 }

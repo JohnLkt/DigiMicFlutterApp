@@ -8,32 +8,37 @@ void main() {
   runApp(const MyApp());
 }
 
-/// Example app for Camera Windows plugin.
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context) => ESPdataState(),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Digital Microscope IEEE',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(9),
-                ),
+      create: (context) => DigimicState(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Digital Microscope IEEE',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(9),
               ),
-            )
+            ),
           ),
-        
-          home: const HomePage(),
-        ));
+          sliderTheme: SliderThemeData(
+            showValueIndicator: ShowValueIndicator.never,
+            tickMarkShape: const RoundSliderTickMarkShape(
+              tickMarkRadius: 5
+            ),
+            activeTickMarkColor: Colors.lightBlueAccent,
+            inactiveTickMarkColor: Colors.blueGrey.withOpacity(0.4),
+          ),
+        ),
+        home: const HomePage(),
+      )
+    );
   }
 }
 
@@ -62,7 +67,9 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
               height: double.infinity,
               child: const Center(
-                child: newControlPanel(),
+                child: Material(
+                  child: ControlPanel(),
+                ),
               ),
             ),
           ),
