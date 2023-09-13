@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:digimicapp/model.dart';
+import 'package:microview/model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +29,8 @@ class _ControlPanelState extends State<ControlPanel> {
           Dpads(),
           SizedBox(height: 40),
           BrightnessSlider(),
-          MultiplierSlider()
+          MultiplierSlider(),
+          Branding(),
         ],
       ),
     );
@@ -237,6 +238,28 @@ class _MultiplierSliderState extends State<MultiplierSlider> {
           }
         ),
       ],
+    );
+  }
+}
+
+class Branding extends StatelessWidget {
+  const Branding({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            child: Image.asset('assets/BinusHR.png', width: 180),
+          ),
+          SizedBox(
+            child: Image.asset('assets/IEEESBBinus.png', width: 180),
+          )
+        ],
+      ),
     );
   }
 }

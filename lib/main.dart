@@ -1,7 +1,8 @@
-import 'package:digimicapp/controls.dart';
+import 'package:microview/controls.dart';
+import 'package:microview/credits.dart';
 import 'package:provider/provider.dart';
 import 'model.dart';
-import 'package:digimicapp/camera.dart';
+import 'package:microview/camera.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       create: (context) => DigimicState(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Digital Microscope IEEE',
+        title: 'MicroView',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           elevatedButtonTheme: ElevatedButtonThemeData(
@@ -70,7 +71,25 @@ class _HomePageState extends State<HomePage> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Digital Microscope IEEE'),
+        title: const Text('MicroView'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.copyright),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const CreditsPage(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.help_outline),
+            onPressed: () {
+              // Add your search functionality here
+            },
+          ),
+        ],
       ),
       body: Row(
         children: [
