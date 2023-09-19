@@ -18,7 +18,7 @@ class _CameraWindowState extends State<CameraWindow> {
   bool _initialized = false;
   bool _recording = false;
   bool _recordingTimed = false;
-  bool _recordAudio = true;
+  bool _recordAudio = false;
   bool _previewPaused = false;
   Size? _previewSize;
   ResolutionPreset _resolutionPreset = ResolutionPreset.veryHigh;

@@ -83,12 +83,6 @@ class _HomePageState extends State<HomePage> {
               );
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.help_outline),
-            onPressed: () {
-              // Add your search functionality here
-            },
-          ),
         ],
       ),
       body: Row(
